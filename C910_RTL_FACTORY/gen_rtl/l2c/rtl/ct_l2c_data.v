@@ -12,6 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
+`include "cpu_cfig.h"
 module ct_l2c_data(
   ciu_l2c_data_acc_cycle,
   ciu_l2c_data_setup,

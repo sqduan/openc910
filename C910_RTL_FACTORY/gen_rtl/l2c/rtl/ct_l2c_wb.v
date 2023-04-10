@@ -13,6 +13,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+`include "cpu_cfig.h"
+
 // &ModuleBeg; @20
 module ct_l2c_wb(
   cmp_rfifo_cp,

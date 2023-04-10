@@ -13,6 +13,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+`include "cpu_cfig.h"
+
 // &Depend("gated_clk_cell.vp"); @22
 // &Depend("ct_spsram_2048x33.vp"); @24
 // &Depend("ct_spsram_1024x33.vp"); @25

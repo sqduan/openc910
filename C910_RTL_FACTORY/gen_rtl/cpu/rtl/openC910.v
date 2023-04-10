@@ -13,6 +13,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+
+`include "cpu_cfig.h"
+
 // &Depend("cpu_cfig.h"); @24
 // &Depend("mp_top_golden_port.vp"); @25
 // &Depend("plic_top.v"); @26

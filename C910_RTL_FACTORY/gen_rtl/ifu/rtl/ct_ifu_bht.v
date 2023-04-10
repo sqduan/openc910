@@ -67,21 +67,27 @@ module ct_ifu_bht(
 );
 
 // &Ports; @23
+// 使能及clock信号
 input           cp0_ifu_bht_en;                 
 input           cp0_ifu_icg_en;                 
 input           cp0_yy_clk_en;                  
 input           cpurst_b;                       
-input           forever_cpuclk;                 
+input           forever_cpuclk;          
+
+
 input           ifctrl_bht_inv;                 
 input           ifctrl_bht_pipedown;            
-input           ifctrl_bht_stall;               
+input           ifctrl_bht_stall;     
+
 input           ipctrl_bht_con_br_gateclk_en;   
 input           ipctrl_bht_con_br_taken;        
 input           ipctrl_bht_con_br_vld;          
 input           ipctrl_bht_more_br;             
-input           ipctrl_bht_vld;                 
+input           ipctrl_bht_vld;           
+
 input           ipdp_bht_h0_con_br;             
 input   [38:0]  ipdp_bht_vpc;                   
+
 input           iu_ifu_bht_check_vld;           
 input           iu_ifu_bht_condbr_taken;        
 input           iu_ifu_bht_pred;                
@@ -104,9 +110,12 @@ input           rtu_ifu_retire1_condbr;
 input           rtu_ifu_retire1_condbr_taken;   
 input           rtu_ifu_retire2_condbr;         
 input           rtu_ifu_retire2_condbr_taken;   
-output          bht_ifctrl_inv_done;            
+
+output          bht_ifctrl_inv_done;                
 output          bht_ifctrl_inv_on;              
-output  [7 :0]  bht_ind_btb_rtu_ghr;            
+
+// 给
+output  [7 :0]  bht_ind_btb_rtu_ghr;             
 output  [7 :0]  bht_ind_btb_vghr;               
 output  [31:0]  bht_ipdp_pre_array_data_ntake;  
 output  [31:0]  bht_ipdp_pre_array_data_taken;  
@@ -340,7 +349,7 @@ parameter PC_WIDTH = 40;
 //--------------------Chip Enable---------------------------
 //the BHT Predict Array is enable when:
 //1.Write Enable
-//  a.BHT INV
+//  a.BHT INVALID
 //  b.BHT can be updated
 //2.Read Enable
 //  (When Update VGHR, BHT need read)
@@ -360,7 +369,7 @@ assign bht_pred_array_rd     = after_inv_reg ||
                                after_bju_mispred || 
                                rtu_ifu_flush || 
                                after_rtu_ifu_flush;
-assign bht_pred_array_cen_b  = !(
+assign bht_pred_array_cen_b  = !(    // cell enable信号
                                   bht_inv_on_reg || 
                                   after_inv_reg  || 
                                   (bht_wr_buf_updt_vld || 
@@ -378,7 +387,7 @@ assign bht_pre_array_clk_en  = bht_inv_on_reg ||
                                bht_pred_array_rd;
                               
 //-------------------Write Enable---------------------------
-assign bht_pred_array_gwen   =  !bht_pred_array_wr;
+assign bht_pred_array_gwen   =  !bht_pred_array_wr;    // 低电平有效
 
 //-------------------Write Bit Enable-----------------------
 assign bht_pred_array_wen_b[31:0] = bht_inv_on_reg 
@@ -453,6 +462,7 @@ end
 //pc[6:3] ^ vghr[3:0] to select result out from sel array
 //vghr[3:0] in ip stage is {if_vghr[2:0], ip_con_br_taken}
 // &CombBeg; @151
+// prediction array的index计算
 always @( vghr_reg[20:14]
        or after_bju_mispred
        or rtughr_reg[21:16]
@@ -469,11 +479,11 @@ if(rtu_ifu_flush)
   bht_pred_array_rd_index[9:0] = {rtughr_reg[13:10],{rtughr_reg[9:4]^rtughr_reg[21:16]}};
 else if(bju_mispred && !iu_ifu_bht_check_vld)
   bht_pred_array_rd_index[9:0] = {bju_ghr[13:10],{bju_ghr[9:4]^bju_ghr[21:16]}};
-else if(bju_mispred && iu_ifu_bht_check_vld)
+else if(bju_mispred && iu_ifu_bht_check_vld) // 更新的历史
   bht_pred_array_rd_index[9:0] = {bju_ghr[12:9],{bju_ghr[8:3]^bju_ghr[20:15]}};
-else if(after_bju_mispred || after_rtu_ifu_flush)
+else if(after_bju_mispred || after_rtu_ifu_flush)    // 更新的历史，此时vghr已经更新了
   bht_pred_array_rd_index[9:0] = {vghr_reg[12:9],{vghr_reg[8:3]^vghr_reg[20:15]}};
-else //ipctrl_bht_con_br_vld
+else //ipctrl_bht_con_br_vld    ？？？？ 因为没有更新的历史，所以
   bht_pred_array_rd_index[9:0] = {vghr_reg[11:8],{vghr_reg[7:2]^vghr_reg[19:14]}};
 // &CombEnd; @162
 end
@@ -593,7 +603,7 @@ assign bht_ghr_updt_clk_en = bht_inv_on_reg ||
 //rtu_ghr is used to record con_br happen in rtu
 //1.BHT INV
 //2.RTU Update
-assign rtughr_updt_vld = cp0_ifu_bht_en && rtu_con_br_vld;
+assign rtughr_updt_vld = cp0_ifu_bht_en && rtu_con_br_vld;    // 从rtu返回的是一条分支语句
 assign rtu_con_br_vld  = rtu_ifu_retire0_condbr || 
                          rtu_ifu_retire1_condbr || 
                          rtu_ifu_retire2_condbr;
@@ -726,6 +736,7 @@ assign bht_sel_data[15:0]     = (sel_rd_flop)
                               ? bht_sel_data_out[15:0] 
                               : bht_sel_data_reg[15:0];
 // &CombBeg; @374
+// 下面这行代码从select array中选择一个
 always @( pcgen_bht_ifpc[5:3])
 begin
 case(pcgen_bht_ifpc[5:3])
@@ -1386,7 +1397,7 @@ begin
     bht_ipdp_pre_array_data_taken[31:0] <= 32'b0;
   else if(ifctrl_bht_pipedown && cp0_ifu_bht_en && bht_pred_array_rd)
     bht_ipdp_pre_array_data_taken[31:0] <= pre_array_pipe_taken_data[31:0];
-  else
+  else  // pipe stall
     bht_ipdp_pre_array_data_taken[31:0] <= bht_ipdp_pre_array_data_taken[31:0];
 end
 

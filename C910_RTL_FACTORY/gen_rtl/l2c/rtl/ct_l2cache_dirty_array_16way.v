@@ -13,6 +13,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+`include "cpu_cfig.h"
+
 // &Depend("ct_spsram_128x144.vp"); @23
 // &Depend("ct_spsram_256x144.vp"); @24
 // &Depend("ct_spsram_512x144.vp"); @25

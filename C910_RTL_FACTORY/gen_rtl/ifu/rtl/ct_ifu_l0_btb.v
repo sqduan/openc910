@@ -70,9 +70,9 @@ input           addrgen_l0_btb_update_vld_bit;
 input   [3 :0]  addrgen_l0_btb_wen;           
 input           cp0_ifu_btb_en;               
 input           cp0_ifu_icg_en;               
-input           cp0_ifu_l0btb_en;             
-input           cp0_yy_clk_en;                
-input           cpurst_b;                     
+input           cp0_ifu_l0btb_en;                    
+input           cp0_yy_clk_en;                       // clk 使能信号
+input           cpurst_b;                            // reset 信号
 input           forever_cpuclk;               
 input           ibdp_l0_btb_fifo_update_vld;  
 input           ibdp_l0_btb_update_cnt_bit;   
@@ -95,9 +95,10 @@ input           pcgen_l0_btb_chgflw_mask;
 input   [14:0]  pcgen_l0_btb_chgflw_pc;       
 input           pcgen_l0_btb_chgflw_vld;      
 input   [38:0]  pcgen_l0_btb_if_pc;           
-input   [38:0]  ras_l0_btb_pc;                
+input   [38:0]  ras_l0_btb_pc;
 input   [38:0]  ras_l0_btb_push_pc;           
-input           ras_l0_btb_ras_push;          
+input           ras_l0_btb_ras_push;
+
 output  [1 :0]  l0_btb_debug_cur_state;       
 output  [15:0]  l0_btb_ibdp_entry_fifo;       
 output  [38:0]  l0_btb_ifctrl_chgflw_pc;      

@@ -1,0 +1,6 @@
+*.dbg
+*.bak
+*.qtl
+*.qpg
+*.qdb
+modelsim/*

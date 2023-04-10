@@ -13,6 +13,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+`include "cpu_cfig.h"
+
 module ct_ifu_icache_predecd_array1(
   cp0_ifu_icg_en,
   cp0_yy_clk_en,

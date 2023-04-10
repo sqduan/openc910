@@ -13,6 +13,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+`include "cpu_cfig.h"
+
 // &Depend("gated_clk_cell.vp"); @22
 // &Depend("ct_spsram_512x61.vp"); @24
 // &Depend("ct_spsram_256x61.vp"); @25
@@ -20,7 +22,6 @@ limitations under the License.
 // &Depend("ct_spsram_1024x59.vp"); @28
 // &Depend("ct_spsram_512x59.vp"); @29
 // &Depend("ct_spsram_256x59.vp"); @30
-
 
 module ct_ifu_icache_tag_array(
   cp0_ifu_icg_en,

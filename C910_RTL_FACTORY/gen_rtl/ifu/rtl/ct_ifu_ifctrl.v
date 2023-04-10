@@ -13,6 +13,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+`include "cpu_cfig.h"
+
 // &ModuleBeg; @22
 module ct_ifu_ifctrl(
   bht_ifctrl_inv_done,

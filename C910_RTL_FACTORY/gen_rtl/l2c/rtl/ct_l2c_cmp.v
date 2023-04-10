@@ -13,6 +13,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+
+`include "cpu_cfig.h"
 // &ModuleBeg; @22
 module ct_l2c_cmp(
   ciu_l2c_snpl2_ready_x,

@@ -762,7 +762,7 @@ assign bju_mispred           = bju_bht_mispred || bju_jmp_mispred;
 assign bju_chgflw_vld        = bju_mispred
                                && !rtu_iu_flush_chgflw_mask
                                && bju_older_inst_vld;
-assign bju_condbr_vld        = bju_older_inst_vld && bju_inst_condbr;
+assign bju_condbr_vld        = bju_older_inst_vld && bju_inst_condbr;  // 是一条cond语句
 
 //==========================================================
 //                     EX1 Cancel Logic
